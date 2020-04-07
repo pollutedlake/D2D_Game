@@ -45,6 +45,7 @@ class CMyMain
 	VecINT2D m_ScreenHalf;		// 화면의 반사이즈 계속 계산해 준다.
 	Vector2D m_CamPos = { 0.0f,0.0f };		// 카메라의 절대좌표(전체 지형 기준의 카메라의 좌표)
 
+public:
 	//------ Edit 기능
 	bool m_IsMonEdit = false;
 	TCHAR m_szTitle[128] = { _T('\0') };		// 제목 표시줄 텍스트입니다.
@@ -61,6 +62,9 @@ public:
 	void MainDestroy();
 
 	void LimitMoveCam();
+	void MonEditMenu();
+	void LoadMonSpPos();		// Spawn
+	void SaveMonSpPos();		// Spawn
 
 	void On_MessageHook(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 

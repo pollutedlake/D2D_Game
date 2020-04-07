@@ -3,6 +3,8 @@
 #include "CBackGround.h"
 #include "CHero.h"
 #include "CMonster_Mgr.h"
+#include "resource.h"
+#pragma warning(disable: 4996)
 
 CMyMain::CMyMain()
 {
@@ -59,6 +61,8 @@ void CMyMain::MainInit(HWND a_hWnd)
 	//------ 몬스터 매니저 초기화
 	g_Mon_Mgr.MonMgr_Init(a_hWnd, D2DLoadImg);
 	//------ 몬스터 매니저 초기화
+
+	LoadMonSpPos();		// 몬스터 Pos정보 로딩
 }
 
 void CMyMain::MainUpdate()
@@ -103,7 +107,15 @@ void CMyMain::MainUpdate()
 				a_TargetV.x = (int)a_NewMMXZ.x + m_CamPos.x;		// 마우스의 좌표
 				a_TargetV.y = (int)a_NewMMXZ.y + m_CamPos.y;
 
-				g_Hero.MsPicking(a_TargetV);
+				if (m_IsMonEdit == true) {
+					g_Mon_Mgr.AddMonSpPos(a_TargetV);
+					static TCHAR str[128];
+					_stprintf_s(str, _T("몬스터 에디트 모드 : %d"), g_Mon_Mgr.m_SpawnPos.size());
+					SetWindowText(m_hWnd, (LPTSTR)str);
+				}
+				else {
+					g_Hero.MsPicking(a_TargetV);
+				}
 
 				a_IsCkLBtn = true;
 			}	// if (a_IsCkLBtn == false)
@@ -118,6 +130,12 @@ void CMyMain::MainUpdate()
 	//------ 배경 업데이트
 	g_BG_Mgr.BGMgrUpdate(m_DeltaTime, m_ScreenHalf, m_CamPos);
 	//------ 배경 업데이트
+
+	//------ 몬스터 매니저 업데이트
+	if (m_IsMonEdit == false) {
+		g_Mon_Mgr.MonMgr_Update(m_DeltaTime, m_ScreenHalf, m_CamPos, g_Hero);
+	}
+	//------ 몬스터 매니저 업데이트
 }
 
 void CMyMain::MainRender(HWND a_hWnd)
@@ -154,6 +172,15 @@ void CMyMain::MainRender(HWND a_hWnd)
 	g_BG_Mgr.BGMgrRender(m_pd2dRenderTarget);
 	//------ 배경 렌더링
 
+	//--- 몬스터 이미지 렌더링...
+	if (m_IsMonEdit == false) {
+		g_Mon_Mgr.MonMgr_Render(m_pd2dRenderTarget, m_Brush);
+	}
+	else if (m_IsMonEdit == true) {
+		g_Mon_Mgr.MonEdit_Render(m_pd2dRenderTarget, m_Brush, m_ScreenHalf, m_CamPos);
+	}
+	//--- 몬스터 이미지 렌더링...
+
 	//------ 주인공 렌더링
 	g_Hero.Render_Unit(m_pd2dRenderTarget, m_Brush);
 	//------ 주인공 렌더링
@@ -167,6 +194,14 @@ void CMyMain::MainRender(HWND a_hWnd)
 
 void CMyMain::MainDestroy()
 {
+	//--- 몬스터 제거...
+	g_Mon_Mgr.MonMgr_Destroy();
+	//--- 몬스터 제거...
+
+	//--- 주인공 제거
+	g_Hero.Destroy_Unit();
+	//--- 주인공 제거
+
 	//------ 배경 제거
 	g_BG_Mgr.BGMgrDestroy();
 	//------ 배경 제거
@@ -267,9 +302,93 @@ void CMyMain::LimitMoveCam()
 	//------ 캐릭터 지형 밖으로 벗어날 수 없게 제한 걸기...
 }
 
+void CMyMain::MonEditMenu()
+{
+	m_IsMonEdit = !m_IsMonEdit;
+	HMENU hMainMenu = GetMenu(m_hWnd);
+	HMENU hMenu = GetSubMenu(hMainMenu, 1);		// 서브메뉴
+	if (m_IsMonEdit == true) {
+		TCHAR str[128];
+		_stprintf_s(str, _T("몬스터 에디트 모드 : %d"), g_Mon_Mgr.m_SpawnPos.size());
+		SetWindowText(m_hWnd, (LPTSTR)str);
+		CheckMenuItem((HMENU)hMenu, ID_MONEDITMODE, MF_BYCOMMAND | MF_CHECKED);
+	}
+	else {
+		SetWindowText(m_hWnd, (LPTSTR)m_szTitle);
+		CheckMenuItem((HMENU)hMenu, ID_MONEDITMODE, MF_BYCOMMAND | MF_UNCHECKED);
+
+		g_Mon_Mgr.ReSrcClear();
+		for (int ii = 0; ii < g_Mon_Mgr.m_SpawnPos.size(); ii++) {
+			g_Mon_Mgr.m_SpawnPos[ii].m_SpDelay = 0.1f;		// 다시 생성해 준다.
+		}
+
+		if (MessageBox(NULL, _T("지금 편집한 상태를 저장하시겠습니까?"), _T("확인"), MB_YESNO) == IDYES) {
+			SaveMonSpPos();		// 자동 저장
+		}
+	}	// else
+}
+
+void CMyMain::LoadMonSpPos()
+{
+	//------ 파일 로딩
+	FILE* a_rPF = fopen("MySave.abc", "rb");
+	if (a_rPF != NULL) {
+		int Count = 0;
+		fread(&Count, sizeof(int), 1, a_rPF);
+		static Vector2D a_SpPosV;
+		int a_XX = 0;
+		int a_YY = 0;
+		for (int aa = 0; aa < Count; aa++) {
+			fread(&a_XX, sizeof(int), 1, a_rPF);
+			fread(&a_YY, sizeof(int), 1, a_rPF);
+			a_SpPosV.x = a_XX;
+			a_SpPosV.y = a_YY;
+			g_Mon_Mgr.AddMonSpPos(a_SpPosV);
+		}
+
+		fclose(a_rPF);
+	}
+	//------ 파일 로딩
+}
+
+void CMyMain::SaveMonSpPos()
+{
+	//------ 파일 저장
+	FILE* a_wPF = fopen("MySave.abc", "wb");
+	if (a_wPF != NULL) {
+		int Count = g_Mon_Mgr.m_SpawnPos.size();
+		fwrite(&Count, sizeof(int), 1, a_wPF);
+		int a_XX = 0;
+		int a_YY = 0;
+		for (int aa = 0; aa < Count; aa++) {
+			a_XX = g_Mon_Mgr.m_SpawnPos[aa].m_Pos.x;
+			a_YY = g_Mon_Mgr.m_SpawnPos[aa].m_Pos.y;
+			fwrite(&a_XX, sizeof(int), 1, a_wPF);
+			fwrite(&a_YY, sizeof(int), 1, a_wPF);
+		}
+
+		fclose(a_wPF);		// fopen() 짝
+	}
+	//------ 파일 저장
+}
+
 void CMyMain::On_MessageHook(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message) {
+	case WM_COMMAND:
+	{
+		int wmId = LOWORD(wParam);
+		// 메뉴 선택을 구문 분석합니다.
+		switch (wmId) {
+		case ID_MONEDITMODE:		// 몬스터 에디터 모드
+		{
+			MonEditMenu();
+		}
+		break;
+		}	// switch (wmId)
+	}	// case WM_COMMAND:
+	break;
+
 	case WM_SIZE:
 	{
 		if (m_pd2dRenderTarget != NULL) {
