@@ -34,6 +34,7 @@ public:
 	void MonEdit_Render(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidColorBrush* a_pBrush, VecINT2D& a_Center, Vector2D& a_CamPos);
 	void MonMgr_Destroy();
 
+	void SpawnMonster(float a_DeltaTime);
 	void ReSrcClear();		// 라운드를 넘어갈 때 필드에 등장해 있는 모든 몬스터 삭제 함수
 
 	void AddMonSpPos(Vector2D& a_SpPos);		//------ Edit 지원 함수
