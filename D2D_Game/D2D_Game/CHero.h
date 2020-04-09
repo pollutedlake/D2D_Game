@@ -30,6 +30,8 @@ public:
 	Vector2D m_TargetPos;
 	// 피킹 관련 변수들...
 
+	float m_HalfColl = 20.0f;		// 주인공의 충돌 반경
+
 public:
 	CHero();
 	~CHero();

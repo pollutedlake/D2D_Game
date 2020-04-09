@@ -46,11 +46,69 @@ void CMonster_Mgr::MonMgr_Update(double a_DeltaTime, VecINT2D& a_Center, Vector2
 	//------ 주기적인 Monster Spawn
 
 	//------ Monster AI
+	static Vector2D a_CalcVec;
+	static float a_CalcSDist;
+	static float a_CalcMargin = 0.0f;
+	static float a_RadiusHap;
+	static Vector2D a_CalcMovePos;
+	static Vector2D a_CalcSNormal;
+	static float a_CalcShiftLen = 0.0f;
+	static CMonster* a_OtherMon = NULL;
+	static list<CMonster*>::iterator a_OtIter;		// <--- 메모리 풀 순환용 변수
+
 	static CMonster* a_OwnMon = NULL;
 	for (a_iter = m_ActMonList.begin(); a_iter != m_ActMonList.end(); a_iter++) {
 		a_OwnMon = (*a_iter);
 
 		a_OwnMon->Update_Unit(a_DeltaTime, a_Center, a_CamPos, a_Hero);
+
+		if (a_OwnMon->m_InScRect == false) {		// 컬링
+			continue;
+		}
+
+		// 몬스터끼리 겹치지 않게 하기...
+		for (a_OtIter = m_ActMonList.begin(); a_OtIter != m_ActMonList.end(); a_OtIter++) {
+			a_OtherMon = (*a_OtIter);
+
+			if (a_OwnMon == a_OtherMon) {
+				continue;
+			}
+
+			a_CalcVec = a_OwnMon->m_CurPos - a_OtherMon->m_CurPos;
+			a_CalcSDist = a_CalcVec.Magnitude();
+			a_RadiusHap = a_OwnMon->m_HalfColl + 4 + a_OtherMon->m_HalfColl + 4;		// (내반경 + 적반경) 변수 재활용
+			a_CalcMovePos = a_OwnMon->m_CurPos;
+			if (a_CalcSDist < a_RadiusHap) {		// 겹친 상태
+				a_CalcMargin = a_RadiusHap - a_CalcSDist;
+				a_CalcSNormal = a_CalcVec;		// 밀려야할 방향
+				a_CalcSNormal.Normalize();
+				a_CalcShiftLen = a_CalcMargin;
+				if (a_RadiusHap < a_CalcShiftLen) {		// 안전장치 시간간격도 반지름보다 커지면 안된다.
+					a_CalcShiftLen = a_RadiusHap;
+				}
+				a_CalcMovePos = a_CalcMovePos + (a_CalcSNormal * a_CalcShiftLen);
+			}	// if (a_CalcSDist < a_RadiusHap)
+			a_OwnMon->m_CurPos = a_CalcMovePos;
+		}	// for (a_OtIter = m_ActMonList.begin(); a_OtIter != m_ActMonList.end(); a_OtIter++)
+		// 몬스터끼리 겹치지 않게 하기...
+
+		//------ 주인공과의 충돌처리
+		a_CalcVec = a_OwnMon->m_CurPos - a_Hero.m_CurPos;
+		a_CalcSDist = a_CalcVec.Magnitude();
+		a_RadiusHap = a_OwnMon->m_HalfColl + 4 + a_Hero.m_HalfColl + 4;		// (내반경 + 적반경) 변수 재활용
+		a_CalcMovePos = a_OwnMon->m_CurPos;
+		if (a_CalcSDist < a_RadiusHap) {
+			a_CalcMargin = a_RadiusHap - a_CalcSDist;
+			a_CalcSNormal = a_CalcVec;		// 밀려야할 방향
+			a_CalcSNormal.Normalize();
+			a_CalcShiftLen = a_CalcMargin;
+			if (a_RadiusHap < a_CalcShiftLen) {		// 안전장치 시간간격도 반지름보다 커지면 안된다.
+				a_CalcShiftLen = a_RadiusHap;
+			}
+			a_CalcMovePos = a_CalcMovePos + (a_CalcSNormal * a_CalcShiftLen);
+		}	// if (a_CalcSDist < a_RadiusHap)
+		a_OwnMon->m_CurPos = a_CalcMovePos;
+		//------ 주인공과의 충돌처리
 	}	// for (a_iter = m_ActMonList.begin(); a_iter != m_ActMonList.end(); a_iter++)
 	//------ Monster AI
 }
