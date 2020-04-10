@@ -5,6 +5,7 @@
 #include "CMonster_Mgr.h"
 #include "resource.h"
 #pragma warning(disable: 4996)
+#include "CBullet_Mgr.h"
 
 CMyMain::CMyMain()
 {
@@ -61,6 +62,10 @@ void CMyMain::MainInit(HWND a_hWnd)
 	//------ 몬스터 매니저 초기화
 	g_Mon_Mgr.MonMgr_Init(a_hWnd, D2DLoadImg);
 	//------ 몬스터 매니저 초기화
+
+	//------ 총알 매니저 호출
+	g_Bullet_Mgr.BLMgerInit(D2DLoadImg);
+	//------ 총알 매니저 호출
 
 	LoadMonSpPos();		// 몬스터 Pos정보 로딩
 }
@@ -136,6 +141,13 @@ void CMyMain::MainUpdate()
 		g_Mon_Mgr.MonMgr_Update(m_DeltaTime, m_ScreenHalf, m_CamPos, g_Hero);
 	}
 	//------ 몬스터 매니저 업데이트
+
+	//------ 총알 업데이트
+	g_Bullet_Mgr.m_CenterPos = m_ScreenHalf;
+	g_Bullet_Mgr.m_CamPos = g_Hero.m_CamPos;
+	// GDeltaUpdate(m_DeltaTime);
+	g_Bullet_Mgr.BLMgerUpdate(m_DeltaTime, m_LastTime, NULL, NULL, NULL);
+	//------ 총알 업데이트
 }
 
 void CMyMain::MainRender(HWND a_hWnd)
@@ -185,6 +197,10 @@ void CMyMain::MainRender(HWND a_hWnd)
 	g_Hero.Render_Unit(m_pd2dRenderTarget, m_Brush);
 	//------ 주인공 렌더링
 
+	//--- 총알 렌더링
+	g_Bullet_Mgr.BLMgerRender(m_pd2dRenderTarget, m_Brush);
+	//--- 총알 렌더링
+
 	m_Brush->SetColor(D2D1::ColorF(0xff00ff));
 	D2D1_SIZE_F renderTargetSize = m_pd2dRenderTarget->GetSize();
 	m_pd2dRenderTarget->DrawText(strFPS, wcslen(strFPS), m_pTextFormat, D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height), m_Brush);
@@ -205,6 +221,10 @@ void CMyMain::MainDestroy()
 	//------ 배경 제거
 	g_BG_Mgr.BGMgrDestroy();
 	//------ 배경 제거
+
+	//--- 총알 리소스 제거
+	g_Bullet_Mgr.BLMgerDestroy();
+	//--- 총알 리소스 제거
 
 	if (m_pImageFactory != NULL) {
 		m_pImageFactory->Release();

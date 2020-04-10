@@ -87,6 +87,8 @@ void CMonster::Spawn(float a_XX, float a_YY, ID2D1Bitmap* a_RefImg)
 
 	m_isActive = true;
 
+	m_CurHP = m_MaxHP;
+
 	m_SocketImg = a_RefImg;
 
 	m_BasePos = m_CurPos;
@@ -213,7 +215,7 @@ void CMonster::Monster_AI(float a_DeltaTime, CHero& a_Hero)
 				m_MoveDir = a_CalcVLen;
 				m_MoveDir.Normalize();
 
-				if (a_CalcDist < (a_Hero.m_HalfColl + m_HalfColl + 100.0f)) {		// 공격거리
+				if (a_CalcDist < (a_Hero.m_HalfColl + m_HalfColl + 10.0f)) {		// 공격거리
 					if (m_AttackTick <= 0.0f) {		// 공격 범위 안에 들어오면 즉시 공격
 						// 몬스터가 주인공 공격
 						// a_Hero.TackDamage(10);

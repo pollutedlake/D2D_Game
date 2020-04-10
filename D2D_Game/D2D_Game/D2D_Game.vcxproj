@@ -148,6 +148,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CBackGround.h" />
+    <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CBullet_Mgr.h" />
     <ClInclude Include="CHero.h" />
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CMonster_Mgr.h" />
@@ -162,6 +164,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBackGround.cpp" />
+    <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CBullet_Mgr.cpp" />
     <ClCompile Include="CHero.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CMonster_Mgr.cpp" />

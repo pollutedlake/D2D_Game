@@ -35,7 +35,6 @@ void CBackGround::BGMgrUpdate(float a_DeltaTime, VecINT2D& a_Center, Vector2D& a
 
 void CBackGround::BGMgrRender(ID2D1HwndRenderTarget* a_pd2dRTarget)
 {
-	// 이쪽 계사닝 좀 더 부드럽게 움직인다.
 	m_TileStPos.x = - m_WorldHfSize.x;
 	m_TileStPos.y = - m_WorldHfSize.y;
 
