@@ -35,6 +35,10 @@ public:
 		void(*GenSmokePtc)(Vector2D a_StartV, DWORD a_CurTime, Vector2D a_DirVec) = NULL);		// <--- 미사일 Smoke 생성용 함수 포인터
 	void BLMgerRender(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidColorBrush* a_pBrush);
 	void BLMgerDestroy();
+
+	void SpawnPistol(Vector2D a_StartV, Vector2D a_TargetV);
+	void SpawnMachineGun(Vector2D a_StartV, Vector2D a_TargetV);
+	void SpawnRocket(Vector2D a_StartV, Vector2D a_TargetV);
 };
 
 extern CBullet_Mgr g_Bullet_Mgr;

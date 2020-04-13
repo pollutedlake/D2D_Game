@@ -6,6 +6,7 @@
 #include "resource.h"
 #pragma warning(disable: 4996)
 #include "CBullet_Mgr.h"
+#include "GlobalValue.h"
 
 CMyMain::CMyMain()
 {
@@ -132,6 +133,88 @@ void CMyMain::MainUpdate()
 	}
 	//------ MousePick 처리 부분
 
+	//------ 총알 발사
+	static float g_Ticktime = 0.0f;
+
+	//------ MachineGun Timer
+	static int g_AddCount = 0;
+	static float g_MgEcTick = 0.0f;
+	static float g_MgTickTm = 0.0f;
+
+	g_MgEcTick = g_MgEcTick - m_DeltaTime;
+	if (g_MgEcTick < -10.0f) {
+		g_MgEcTick = -10.0f;
+	}
+
+	g_MgTickTm = g_MgTickTm - m_DeltaTime;
+	if (g_MgTickTm < -10.0f) {
+		g_MgTickTm = -10.0f;
+	}
+	//------ MachineGun Timer
+
+	if (GetFocus() != NULL) {		// 내 윈도우가 포커스를 가지고 있다는 뜻
+		if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) {		// 마우스 우측 버튼 클릭
+			if (WeaponSlot == PISTOL) {
+				if (g_MgEcTick <= 0.0f) {
+					static POINT a_MPos;
+					GetCursorPos(&a_MPos);
+					ScreenToClient(m_hWnd, &a_MPos);
+
+					static Vector2D a_TargetV;
+					a_TargetV.x = (float)a_MPos.x + g_Hero.m_CamPos.x;		// 마우스의 좌표
+					a_TargetV.y = (float)a_MPos.y + g_Hero.m_CamPos.y;
+
+					g_Bullet_Mgr.SpawnPistol(g_Hero.m_CurPos, a_TargetV);
+
+					g_MgEcTick = 0.2f;
+				}	// if (g_MgEcTick <= 0.0f)
+			}	// if (WeaponSlot == PISTOL)
+
+			else if (WeaponSlot == HEAVY_MACHINE_GUN) {
+				if (g_MgTickTm <= 0.0f) {
+					g_MgEcTick = 0.0f;
+					g_AddCount = 0;
+
+					g_MgTickTm = 0.064f;
+				}
+
+				// 이전 총알이 움직이기 전에 몇개의 총알이 발사되게 할 것인지? 설정하는 코드
+				if (g_MgEcTick <= 0.0f && g_AddCount < 4) {		// <--- 쿨타임 적용 3발 연속 사격
+					// g_AddCount 한번에 발사되는 총알의 갯수를 의미함
+					static POINT a_MPos;
+					GetCursorPos(&a_MPos);
+					ScreenToClient(m_hWnd, &a_MPos);
+
+					static Vector2D a_TargetV;
+					a_TargetV.x = (float)a_MPos.x + g_Hero.m_CamPos.x;
+					a_TargetV.y = (float)a_MPos.y + g_Hero.m_CamPos.y;
+
+					g_Bullet_Mgr.SpawnMachineGun(g_Hero.m_CurPos, a_TargetV);
+
+					g_MgEcTick = 0.02f;		// 머신건의 쿨타임은 0.02초로 되어 있음
+					g_AddCount++;
+				}
+			}	// else if (WeaponSlot == HEAVY_MACHINE_GUN)
+
+			else if (WeaponSlot == ROCKET_LAUNCHER) {
+				if (g_MgEcTick <= 0.0f) {
+					static POINT a_MPos;
+					GetCursorPos(&a_MPos);
+					ScreenToClient(m_hWnd, &a_MPos);
+
+					static Vector2D a_TargetV;
+					a_TargetV.x = (float)a_MPos.x + g_Hero.m_CamPos.x;
+					a_TargetV.y = (float)a_MPos.y + g_Hero.m_CamPos.y;
+
+					g_Bullet_Mgr.SpawnRocket(g_Hero.m_CurPos, a_TargetV);
+
+					g_MgEcTick = 0.2f;
+				}	// if (g_MgEcTick <= 0.0f)
+			}	// else if (WeaponSlot == ROCKET_LAUNCHER)
+		}	// if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
+	}
+	//------ 총알 발사
+
 	//------ 배경 업데이트
 	g_BG_Mgr.BGMgrUpdate(m_DeltaTime, m_ScreenHalf, m_CamPos);
 	//------ 배경 업데이트
@@ -145,10 +228,10 @@ void CMyMain::MainUpdate()
 	//------ 총알 업데이트
 	g_Bullet_Mgr.m_CenterPos = m_ScreenHalf;
 	g_Bullet_Mgr.m_CamPos = g_Hero.m_CamPos;
-	// GDeltaUpdate(m_DeltaTime);
-	g_Bullet_Mgr.BLMgerUpdate(m_DeltaTime, m_LastTime, NULL, NULL, NULL);
+	GDeltaUpdate(m_DeltaTime);
+	g_Bullet_Mgr.BLMgerUpdate(m_DeltaTime, m_LastTime, GetMvDelta, NULL, NULL);
 	//------ 총알 업데이트
-}
+}	// void CMyMain::MainUpdate()
 
 void CMyMain::MainRender(HWND a_hWnd)
 {
@@ -185,10 +268,10 @@ void CMyMain::MainRender(HWND a_hWnd)
 	//------ 배경 렌더링
 
 	//--- 몬스터 이미지 렌더링...
-	if (m_IsMonEdit == false) {
+	if (m_IsMonEdit == false) {		// 게임모드 몬스터 이미지 렌더링...
 		g_Mon_Mgr.MonMgr_Render(m_pd2dRenderTarget, m_Brush);
 	}
-	else if (m_IsMonEdit == true) {
+	else if (m_IsMonEdit == true) {		// 몬스터 에디터모드 이미지 렌더링...
 		g_Mon_Mgr.MonEdit_Render(m_pd2dRenderTarget, m_Brush, m_ScreenHalf, m_CamPos);
 	}
 	//--- 몬스터 이미지 렌더링...

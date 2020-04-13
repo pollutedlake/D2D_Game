@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "CBullet_Mgr.h"
+#include "GlobalValue.h"
 
 CBullet_Mgr::CBullet_Mgr()
 {
@@ -21,9 +22,9 @@ void CBullet_Mgr::BLMgerInit(ID2D1Bitmap* (*D2DLoadBmp)(LPCWSTR FName))
 
 	if (m_RocketImg == NULL) {
 		m_RocketImg = D2DLoadBmp(_T(".\\RscTrunk\\Weapon\\Missile.png"));
-		m_RocketWidth = 40.0f;
-		m_RocketHeight = 10.0f;
-		// m_Radius = 25.0f;		// 총알 충돌 반경
+		m_RocketWidth = 100.0f;
+		m_RocketHeight = 32.0f;
+		// m_Radius = 40.0f;		// 총알 충돌 반경
 	}
 	//------ 총알 이미지 로딩
 
@@ -100,6 +101,80 @@ void CBullet_Mgr::BLMgerDestroy()
 		m_RocketImg->Release();
 		m_RocketImg = NULL;
 	}
+}
+
+void CBullet_Mgr::SpawnPistol(Vector2D a_StartV, Vector2D a_TargetV)
+{
+}
+
+void CBullet_Mgr::SpawnMachineGun(Vector2D a_StartV, Vector2D a_TargetV)
+{
+	static Vector2D SpawnLocation;
+	static float Ang = 0.0f;
+
+	//------- void Weapon_HeavyMachineGun::HandleShoot
+	static Vector2D a_CalcDirVec;
+	a_CalcDirVec = a_TargetV - a_StartV;
+	a_CalcDirVec.Normalize();
+
+	SpawnLocation = a_StartV + a_CalcDirVec * 50.0;
+
+	Ang = a_CalcDirVec.GetAngle();		// 벡터를 각도로 환산
+	Ang += RandInt(-1000, 1000) / 500.0f;		// +- 2도
+	a_CalcDirVec = Vector2D::GetNormalFromRotation(Ang);		// 각도를 벡터로 환산
+	a_CalcDirVec.Normalize();
+
+	SpawnLocation = SpawnLocation + Vector2D(RandInt(-5, 5), RandInt(-5, 5));
+	//------- void Weapon_HeavyMachineGun::HandleShoot
+
+	for (int aii = 0; aii < m_BullList.size(); aii++) {
+		if (m_BullList[aii]->m_BLActive == false) {
+			m_BullList[aii]->WeaponType = EWeaponSlots::HEAVY_MACHINE_GUN;
+			m_BullList[aii]->m_BulletImg = m_MachineGunImg;
+			m_BullList[aii]->m_TexImgWidth = m_McGunWidth;
+			m_BullList[aii]->m_TexImgHeight = m_McGunHeight;
+			m_BullList[aii]->m_Radius = 25.0f;		// 총알 충돌 반경
+			m_BullList[aii]->m_MoveSpeed = 1700.0f;
+
+			m_BullList[aii]->m_CurPos.x = SpawnLocation.x;
+			m_BullList[aii]->m_CurPos.y = SpawnLocation.y;
+			m_BullList[aii]->m_RenderPos.x = SpawnLocation.x;
+			m_BullList[aii]->m_RenderPos.y = SpawnLocation.y;
+
+			m_BullList[aii]->m_DirVec = a_CalcDirVec;
+			m_BullList[aii]->m_DirRot = Ang;
+			m_BullList[aii]->m_BLActive = true;
+			m_BullList[aii]->m_Duration = 2.0f;
+			
+			return;
+		}	// if (m_BullList[aii]->m_BLActive == false)
+	}	// for (int aii = 0; aii < m_BullList.size(); aii++)
+
+	static CBullet* m_BLNode = NULL;
+	m_BLNode = new CBullet();
+
+	m_BLNode->WeaponType = EWeaponSlots::HEAVY_MACHINE_GUN;
+	m_BLNode->m_BulletImg = m_MachineGunImg;
+	m_BLNode->m_TexImgWidth = m_McGunWidth;
+	m_BLNode->m_TexImgHeight = m_McGunHeight;
+	m_BLNode->m_Radius = 25.0f;		// 총알 충돌 반경
+	m_BLNode->m_MoveSpeed = 1700.0f;
+
+	m_BLNode->m_CurPos.x = SpawnLocation.x;
+	m_BLNode->m_CurPos.y = SpawnLocation.y;
+	m_BLNode->m_RenderPos.x = SpawnLocation.x;
+	m_BLNode->m_RenderPos.y = SpawnLocation.y;
+
+	m_BLNode->m_DirVec = a_CalcDirVec;
+	m_BLNode->m_DirRot = Ang;
+	m_BLNode->m_BLActive = true;
+	m_BLNode->m_Duration = 2.0f;
+
+	m_BullList.push_back(m_BLNode);
+}
+
+void CBullet_Mgr::SpawnRocket(Vector2D a_StartV, Vector2D a_TargetV)
+{
 }
 
 CBullet_Mgr g_Bullet_Mgr;

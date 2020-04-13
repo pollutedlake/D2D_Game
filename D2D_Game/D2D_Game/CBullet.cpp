@@ -42,5 +42,21 @@ void CBullet::BulletRender(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidColor
 	int x = a_iXX - m_TexImgWidth * 0.5f;
 	int y = a_iYY - m_TexImgHeight * 0.5f;
 	float Rotation = m_DirVec.GetAngle();
-	float Alpha = 1.0f;																																																												
+	float Alpha = 1.0f;	
+
+	D2D1_POINT_2F center_pos = { a_iXX, a_iYY };
+	a_pd2dRTarget->SetTransform(D2D1::Matrix3x2F::Rotation(Rotation, center_pos));
+
+	//------ 이미지 렌더링
+	if (WeaponType == EWeaponSlots::PISTOL) {
+		a_pBrush->SetColor(D2D1::ColorF(0x00ffff));
+		a_pd2dRTarget->FillRectangle(D2D1::RectF(x, y, x + m_TexImgWidth, y + m_TexImgHeight), a_pBrush);
+		a_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::White));
+	}
+	else {
+		a_pd2dRTarget->DrawBitmap(m_BulletImg, D2D1::RectF(x, y, x + m_TexImgWidth, y + m_TexImgHeight), Alpha, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR);
+	}
+	//------ 이미지 렌더링
+
+	a_pd2dRTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 }
