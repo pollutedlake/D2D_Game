@@ -247,4 +247,88 @@ void CMonster_Mgr::AddMonSpPos(Vector2D& a_SpPos)
 	m_SpawnPos.push_back(a_Temp);
 }
 
+bool CMonster_Mgr::CheckBulletColl(Vector2D a_BL_Pos, float a_BL_Rad, Vector2D& a_MonPos, float a_TakeDamage)
+{
+	static Vector2D a_CalcBVec;
+	static Vector2D a_BaseVec;
+	static CMonster* a_MonNode = NULL;
+	static list<CMonster*>::iterator a_OMIter;
+	static CMonster* a_OM_Mon = NULL;
+	// 총알이 몬스터에 맞았으면 제거해 준다. 몬스터 제거 총알 제거
+	if (0 < m_ActMonList.size()) {
+		for (a_iter = m_ActMonList.begin(); a_iter != m_ActMonList.end();) {
+			a_MonNode = (*a_iter);
+			if (a_MonNode->m_InScRect == false) {		// 컬링
+				a_iter++;
+				continue;
+			}
+
+			a_CalcBVec = a_MonNode->m_CurPos - a_BL_Pos;
+			if (a_CalcBVec.Magnitude() < (a_MonNode->m_HalfColl + a_BL_Rad)) {		// 몬스터의 반지름 10 + 총알의 반지름 10 + 10(좀 넓게)
+				a_MonNode->m_CurHP = a_MonNode->m_CurHP - a_TakeDamage;
+				if (a_MonNode->m_CurHP <= 0.0f) {
+					// CHero::m_KillCount++;
+
+					// //------ Item 스폰
+					// g_ItemMgr.SpawnItem(a_MonNode->m_CurPos);
+					// //------ Item 스폰
+
+					//--- 리스폰 시간 재충전
+					if (0 <= a_MonNode->m_SpawnIdx) {
+						if (a_MonNode->m_SpawnIdx < m_SpawnPos.size()) {
+							g_Mon_Mgr.m_SpawnPos[a_MonNode->m_SpawnIdx].m_SpDelay = ((rand() % 351) + 150) / 100.0f;		// Random.Range(1.5f, 5.0f);		// 다시 생성해 준다.
+						}
+					}
+					//--- 리스폰 시간 재충전
+
+					//------ 맞은 몬스터 제거
+					a_MonNode->m_isActive = false;
+					a_MonNode->m_SpawnIdx = -1;
+					//------ 맞은 몬스터 제거
+
+					a_MonPos.x = a_MonNode->m_CurPos.x;
+					a_MonPos.y = a_MonNode->m_CurPos.y;
+
+					a_MonNode->m_CurHP = a_MonNode->m_MaxHP;		// 다시 리젠
+					a_MonNode->m_AggroTarget = NULL;
+					a_MonNode->m_AIState = MAI_Patrol;
+
+					a_iter = m_ActMonList.erase(a_iter);		// 활동 노드 몬스터 리스트에서 제거해 주고
+					m_InActMonList.push_back(a_MonNode);		// 활동하지 않는 몬스터 리스트로 추가해 준다.
+				}
+				else {
+					a_BaseVec = a_MonNode->m_CurPos;
+					a_MonNode->m_AggroTarget = &g_Hero;
+					a_MonNode->m_AIState = MAI_AggroTrace;
+
+					for (a_OMIter = m_ActMonList.begin(); a_OMIter != m_ActMonList.end(); a_OMIter++) {
+						a_OM_Mon = (*a_OMIter);
+						if (a_MonNode == a_OM_Mon) {
+							continue;
+						}
+						if (a_OM_Mon->m_isActive == false) {
+							continue;
+						}
+						if (a_OM_Mon->m_AIState == MAI_AggroTrace) {
+							continue;
+						}
+						a_CalcBVec = a_OM_Mon->m_CurPos - a_BaseVec;
+						if (a_CalcBVec.Magnitude() < 400.0f) {		// 주변 몬스터 모두 공격모드로...
+							a_OM_Mon->m_AggroTarget = &g_Hero;
+							a_OM_Mon->m_AIState = MAI_AggroTrace;
+						}
+					}	// for (a_OMIter = m_ActMonList.begin(); a_OMIter != m_ActMonList.end(); a_OMIter++)
+				}
+
+				return true;		// 총알 제거
+			}
+
+			a_iter++;
+		}
+	}
+	// 총알이 몬스터에 맞았으면 제거해 준다. 몬스터 제거 총알 제거
+
+	return false;
+}
+
 CMonster_Mgr g_Mon_Mgr;

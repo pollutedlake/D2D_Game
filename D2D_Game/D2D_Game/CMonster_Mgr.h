@@ -38,6 +38,8 @@ public:
 	void ReSrcClear();		// 라운드를 넘어갈 때 필드에 등장해 있는 모든 몬스터 삭제 함수
 
 	void AddMonSpPos(Vector2D& a_SpPos);		//------ Edit 지원 함수
+
+	bool CheckBulletColl(Vector2D a_BL_Pos, float a_BL_Rad, Vector2D& a_MonPos, float a_TakeDamage = 10.0f);
 };
 
 extern CMonster_Mgr g_Mon_Mgr;

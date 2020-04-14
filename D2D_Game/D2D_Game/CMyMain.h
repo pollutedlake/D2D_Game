@@ -71,6 +71,8 @@ public:
 	// 이미지 로딩 함수 선언
 	static ID2D1Bitmap* D2DLoadImg(LPCWSTR fileName);
 	static HRESULT D2DLoadBitmap(LPCWSTR fileName, ID2D1RenderTarget* a_pRenderTarget, IWICImagingFactory* a_pImgFactory, ID2D1Bitmap** bitmap);
+
+	static bool CheckCollision(class CBullet* a_RefBull, DWORD a_CurTime);
 };
 
 extern CMyMain g_MyMain;

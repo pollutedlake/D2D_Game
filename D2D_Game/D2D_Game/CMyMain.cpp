@@ -7,6 +7,7 @@
 #pragma warning(disable: 4996)
 #include "CBullet_Mgr.h"
 #include "GlobalValue.h"
+#include "CParticle_Mgr.h"
 
 CMyMain::CMyMain()
 {
@@ -67,6 +68,10 @@ void CMyMain::MainInit(HWND a_hWnd)
 	//------ 총알 매니저 호출
 	g_Bullet_Mgr.BLMgerInit(D2DLoadImg);
 	//------ 총알 매니저 호출
+
+	//------ 파티클 초기화 부분
+	g_Particle_Mgr.PtcMgrInit(D2DLoadImg);
+	//------ 파티클 초기화 부분
 
 	LoadMonSpPos();		// 몬스터 Pos정보 로딩
 }
@@ -229,8 +234,12 @@ void CMyMain::MainUpdate()
 	g_Bullet_Mgr.m_CenterPos = m_ScreenHalf;
 	g_Bullet_Mgr.m_CamPos = g_Hero.m_CamPos;
 	GDeltaUpdate(m_DeltaTime);
-	g_Bullet_Mgr.BLMgerUpdate(m_DeltaTime, m_LastTime, GetMvDelta, NULL, NULL);
+	g_Bullet_Mgr.BLMgerUpdate(m_DeltaTime, m_LastTime, GetMvDelta, CheckCollision, NULL);
 	//------ 총알 업데이트
+
+	//------ 파티클 업데이트
+	g_Particle_Mgr.PtcMgrUpdate(m_LastTime, m_ScreenHalf, m_CamPos);
+	//------ 파티클 업데이트
 }	// void CMyMain::MainUpdate()
 
 void CMyMain::MainRender(HWND a_hWnd)
@@ -280,6 +289,10 @@ void CMyMain::MainRender(HWND a_hWnd)
 	g_Hero.Render_Unit(m_pd2dRenderTarget, m_Brush);
 	//------ 주인공 렌더링
 
+	//------ 파티클 렌더링
+	g_Particle_Mgr.PtcMgrRender(m_pd2dRenderTarget, m_Brush);		// 나중에 위치 확인
+	//------ 파티클 렌더링
+
 	//--- 총알 렌더링
 	g_Bullet_Mgr.BLMgerRender(m_pd2dRenderTarget, m_Brush);
 	//--- 총알 렌더링
@@ -308,6 +321,10 @@ void CMyMain::MainDestroy()
 	//--- 총알 리소스 제거
 	g_Bullet_Mgr.BLMgerDestroy();
 	//--- 총알 리소스 제거
+
+	//------ 파티클 제거
+	g_Particle_Mgr.PtcMgrDestroy();
+	//------ 파티클 제거
 
 	if (m_pImageFactory != NULL) {
 		m_pImageFactory->Release();
@@ -567,6 +584,37 @@ HRESULT CMyMain::D2DLoadBitmap(LPCWSTR fileName, ID2D1RenderTarget* a_pRenderTar
 	a_pConverter->Release();
 
 	return hr;
+}
+
+bool CMyMain::CheckCollision(CBullet* a_RefBull, DWORD a_CurTime)
+{
+	static bool a_IsColl = false;
+	static Vector2D a_MonPos;
+	a_MonPos.x = 100000.0f;
+	a_MonPos.y = 100000.0f;
+	static float a_TakeDamage = 10.0f;
+	a_TakeDamage = 10.0f;
+	if (a_RefBull->WeaponType == EWeaponSlots::ROCKET_LAUNCHER) {
+		a_TakeDamage = 120.0f;
+	}
+
+	a_IsColl = g_Mon_Mgr.CheckBulletColl(a_RefBull->m_CurPos, a_RefBull->m_Radius, a_MonPos, a_TakeDamage);		// 몬스터 충돌
+	if (a_IsColl == true) {
+		if (a_RefBull->WeaponType == EWeaponSlots::HEAVY_MACHINE_GUN || a_RefBull->WeaponType == EWeaponSlots::PISTOL) {
+			g_Particle_Mgr.Explosion_MGun(a_RefBull->m_CurPos, a_CurTime);		// 작은 파티클 시작
+		}
+		else if (a_RefBull->WeaponType == EWeaponSlots::ROCKET_LAUNCHER) {
+			// ShakeScreen(5.0f, 0.2f);
+			g_Particle_Mgr.Explosion_Missile(a_RefBull->m_CurPos, a_CurTime, a_RefBull->m_DirRot);
+		}
+
+		if (a_MonPos.x < 10000.0f) {		// 몬스터가 죽은 것으로 판단함
+			g_Particle_Mgr.Explosion_Die(a_MonPos, a_CurTime);		// 큰 파티클 시작
+		}
+		return true;
+	}
+
+	return false;
 }
 
 CMyMain g_MyMain;
