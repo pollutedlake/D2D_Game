@@ -32,7 +32,7 @@ public:
 	~CBullet();
 
 	bool BulletUpdate(float a_DwdDeltaTime,		// <--- 정밀한 기준의 DeltaTime
-		DWORD a_wdLastTime,		// <--- 정밀한 현재 시간
+		DWORD a_DwdLastTime,		// <--- 정밀한 현재 시간
 		float a_WpDeltaTime,		// <--- 무기별 이동을 위한 DeltaTime
 		void(*GenSmokePtc)(Vector2D a_StartV, DWORD a_CurTime, Vector2D a_DirVec) = NULL);		// <--- 미사일 Smoke 생성용 함수 포인터
 

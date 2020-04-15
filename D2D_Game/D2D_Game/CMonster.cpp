@@ -71,6 +71,26 @@ void CMonster::Render_Unit(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidColor
 	a_iXX = m_RenderPos.x;
 	a_iYY = m_RenderPos.y;
 
+	//--- HP Bar Render
+	static float FigureAlpha = 1.0f;		// 도형 투명도
+	static float a_CalcMXX = 0.0f;
+	static float a_CalcMYY = (int)(img_Half.x * 0.8f);
+	static float a_HpBSize = 50;
+	static float a_CurHpSize = 0;
+	a_CalcMXX = a_HpBSize / 2.0f;
+	a_CurHpSize = a_HpBSize * ((float)m_CurHP / (float)m_MaxHP);
+
+	a_CalcMYY = (int)(img_Half.y * 0.67f);
+
+	a_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Red, FigureAlpha));
+	a_pd2dRTarget->FillRectangle(D2D1::RectF(a_iXX - a_CalcMXX, a_iYY - a_CalcMYY, a_iXX - a_CalcMXX + a_CurHpSize, a_iYY - (a_CalcMYY + 9.0f)), a_pBrush);
+
+	a_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::White, FigureAlpha));
+	a_pd2dRTarget->DrawRectangle(D2D1::RectF(a_iXX - a_CalcMXX, a_iYY - a_CalcMYY, a_iXX - a_CalcMXX + a_HpBSize, a_iYY - (a_CalcMYY + 9.0f)), a_pBrush);
+
+	a_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::White));
+	//--- HP Bar Render
+
 	//------ 캐릭터 Render
 	a_pd2dRTarget->DrawBitmap(m_SocketImg, D2D1::RectF(a_iXX - img_Half.x, a_iYY - img_Half.y, a_iXX + img_Half.x, a_iYY + img_Half.y));
 	//------ 캐릭터 Render
@@ -218,7 +238,7 @@ void CMonster::Monster_AI(float a_DeltaTime, CHero& a_Hero)
 				if (a_CalcDist < (a_Hero.m_HalfColl + m_HalfColl + 10.0f)) {		// 공격거리
 					if (m_AttackTick <= 0.0f) {		// 공격 범위 안에 들어오면 즉시 공격
 						// 몬스터가 주인공 공격
-						// a_Hero.TackDamage(10);
+						a_Hero.TakeDamage(10);
 
 						m_AttackTick = 1.0f;
 					}

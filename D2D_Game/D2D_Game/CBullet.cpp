@@ -16,13 +16,26 @@ CBullet::~CBullet()
 {
 }
 
-bool CBullet::BulletUpdate(float a_DwdDeltaTime, DWORD a_wdLastTime, float a_WpDeltaTime, void(*GenSmokePtc)(Vector2D a_StartV, DWORD a_CurTime, Vector2D a_DirVec))
+bool CBullet::BulletUpdate(float a_DwdDeltaTime, DWORD a_DwdLastTime, float a_WpDeltaTime, void(*GenSmokePtc)(Vector2D a_StartV, DWORD a_CurTime, Vector2D a_DirVec))
 {
 	m_Duration = m_Duration - a_DwdDeltaTime;
 	if (m_Duration < 0.0f) {
 		m_BLActive = false;
 		return false;		// 일정 시간 뒤에 제거해 준다.
 	}
+
+	//--- 스모그 스폰
+	if (WeaponSlot == EWeaponSlots::ROCKET_LAUNCHER) {
+		m_SmokeTime = m_SmokeTime - a_WpDeltaTime;
+		if (m_SmokeTime <= 0.0f) {
+			// 주기적으로 스모크 생성
+			if (GenSmokePtc != NULL) {
+				GenSmokePtc(m_CurPos, a_DwdLastTime, m_DirVec);
+			}
+			m_SmokeTime = 0.01;		// 이 주기로
+		}
+	}	// if (WeaponSlot == EWeaponSlots::ROCKET_LAUNCHER)
+	//--- 스모그 스폰
 
 	m_CurPos = m_CurPos + (m_DirVec * (a_DwdDeltaTime * m_MoveSpeed));		// 총알 이동처리
 	m_RenderPos = m_RenderPos + (m_DirVec * (a_WpDeltaTime * m_MoveSpeed));		// 총알 이동처리

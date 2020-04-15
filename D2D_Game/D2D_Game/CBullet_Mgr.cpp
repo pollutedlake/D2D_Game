@@ -105,6 +105,63 @@ void CBullet_Mgr::BLMgerDestroy()
 
 void CBullet_Mgr::SpawnPistol(Vector2D a_StartV, Vector2D a_TargetV)
 {
+	static Vector2D SpawnLocation;
+	static float Ang = 0.0f;
+
+	//-------------- void Weapon_Pistol::HandleShoot
+	static Vector2D a_CacDirVec;
+	a_CacDirVec = a_TargetV - a_StartV;
+	a_CacDirVec.Normalize();
+
+	SpawnLocation = a_StartV + a_CacDirVec * 40.0f; //50.0; //* 20.0f;
+	Ang = a_CacDirVec.GetAngle(); //벡터를 각도로 환산
+	a_CacDirVec = Vector2D::GetNormalFromRotation(Ang); //각도를 벡터로 환산
+	//-------------- void Weapon_Pistol::HandleShoot
+
+	for (int aii = 0; aii < m_BullList.size(); aii++)
+	{
+		if (m_BullList[aii]->m_BLActive == false)
+		{
+			m_BullList[aii]->WeaponType = EWeaponSlots::PISTOL;
+			m_BullList[aii]->m_TexImgWidth = m_PistolWidth;
+			m_BullList[aii]->m_TexImgHeight = m_PistolHeight;
+			m_BullList[aii]->m_Radius = 10.0f; //총알 충돌 반경
+			m_BullList[aii]->m_MoveSpeed = 1000.0f;
+
+			m_BullList[aii]->m_CurPos.x = SpawnLocation.x;
+			m_BullList[aii]->m_CurPos.y = SpawnLocation.y;
+			m_BullList[aii]->m_RenderPos.x = SpawnLocation.x;
+			m_BullList[aii]->m_RenderPos.y = SpawnLocation.y;
+
+			m_BullList[aii]->m_DirVec = a_CacDirVec;
+			m_BullList[aii]->m_DirRot = Ang;
+			m_BullList[aii]->m_BLActive = true;
+			m_BullList[aii]->m_Duration = 2.0f;
+
+			return;
+		}
+	}
+
+	static CBullet* a_BNode = NULL;
+	a_BNode = new CBullet();
+
+	a_BNode->WeaponType = EWeaponSlots::PISTOL;
+	a_BNode->m_TexImgWidth = m_PistolWidth;
+	a_BNode->m_TexImgHeight = m_PistolHeight;
+	a_BNode->m_Radius = 10.0f; //총알 충돌 반경
+	a_BNode->m_MoveSpeed = 1000.0f;
+
+	a_BNode->m_CurPos.x = SpawnLocation.x;
+	a_BNode->m_CurPos.y = SpawnLocation.y;
+	a_BNode->m_RenderPos.x = SpawnLocation.x;
+	a_BNode->m_RenderPos.y = SpawnLocation.y;
+
+	a_BNode->m_DirVec = a_CacDirVec;
+	a_BNode->m_DirRot = Ang;
+	a_BNode->m_BLActive = true;
+	a_BNode->m_Duration = 2.0f;
+
+	m_BullList.push_back(a_BNode);
 }
 
 void CBullet_Mgr::SpawnMachineGun(Vector2D a_StartV, Vector2D a_TargetV)
@@ -175,6 +232,65 @@ void CBullet_Mgr::SpawnMachineGun(Vector2D a_StartV, Vector2D a_TargetV)
 
 void CBullet_Mgr::SpawnRocket(Vector2D a_StartV, Vector2D a_TargetV)
 {
+	static Vector2D SpawnLocation;
+	static float Ang = 0.0f;
+
+	//------ void Weapon_RocketLauncher::HandleShoot
+	static Vector2D a_CalcDirVec;
+	a_CalcDirVec = a_TargetV - a_StartV;
+	a_CalcDirVec.Normalize();
+
+	SpawnLocation = a_StartV + a_CalcDirVec * 50.0;
+
+	Ang = a_CalcDirVec.GetAngle();		// 벡터를 각도로 환산
+
+	SpawnLocation = SpawnLocation + Vector2D(RandInt(-5, 5), RandInt(-5, 5));
+	//------ void Weapon_RocketLauncher::HandleShoot
+
+	for (int aii = 0; aii < m_BullList.size(); aii++) {
+		if (m_BullList[aii]->m_BLActive == false) {
+			m_BullList[aii]->WeaponType = EWeaponSlots::ROCKET_LAUNCHER;
+			m_BullList[aii]->m_BulletImg = m_RocketImg;
+			m_BullList[aii]->m_TexImgWidth = m_RocketWidth;
+			m_BullList[aii]->m_TexImgHeight = m_RocketHeight;
+			m_BullList[aii]->m_Radius = 40.0f;
+			m_BullList[aii]->m_MoveSpeed = 1700.0f;
+
+			m_BullList[aii]->m_CurPos.x = SpawnLocation.x;
+			m_BullList[aii]->m_CurPos.y = SpawnLocation.y;
+			m_BullList[aii]->m_RenderPos.x = SpawnLocation.x;
+			m_BullList[aii]->m_RenderPos.y = SpawnLocation.y;
+
+			m_BullList[aii]->m_DirVec = a_CalcDirVec;
+			m_BullList[aii]->m_DirRot = Ang;
+			m_BullList[aii]->m_BLActive = true;
+			m_BullList[aii]->m_Duration = 2.0f;
+
+			return;
+		}	// if (m_BullList[aii]->m_BLActive == false)
+	}	// for (int aii = 0; aii < m_BullList.size(); aii++)
+
+	static CBullet* m_BLNode = NULL;
+	m_BLNode = new CBullet();
+
+	m_BLNode->WeaponType = EWeaponSlots::ROCKET_LAUNCHER;
+	m_BLNode->m_BulletImg = m_RocketImg;
+	m_BLNode->m_TexImgWidth = m_RocketWidth;
+	m_BLNode->m_TexImgHeight = m_RocketHeight;
+	m_BLNode->m_Radius = 40.0f;		// 총알 충돌 반경
+	m_BLNode->m_MoveSpeed = 1700.0f;
+
+	m_BLNode->m_CurPos.x = SpawnLocation.x;
+	m_BLNode->m_CurPos.y = SpawnLocation.y;
+	m_BLNode->m_RenderPos.x = SpawnLocation.x;
+	m_BLNode->m_RenderPos.y = SpawnLocation.y;
+
+	m_BLNode->m_DirVec = a_CalcDirVec;
+	m_BLNode->m_DirRot = Ang;
+	m_BLNode->m_BLActive = true;
+	m_BLNode->m_Duration = 2.0f;
+
+	m_BullList.push_back(m_BLNode);
 }
 
 CBullet_Mgr g_Bullet_Mgr;

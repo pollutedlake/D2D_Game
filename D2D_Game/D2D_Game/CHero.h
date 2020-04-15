@@ -44,6 +44,8 @@ public:
 
 	void Abs_Update(VecINT2D& a_ScHalf, Vector2D& a_CamPos);
 	void MsPicking(Vector2D a_TgPos);
+
+	void TakeDamage(float a_Damage = 10.0f);
 };
 
 extern CHero g_Hero;

@@ -21,3 +21,5 @@ int RandInt(int min, int max);
 
 void GDeltaUpdate(float a_DeltaTime);
 float GetMvDelta(int WpType);
+
+int ChangeWeapon();

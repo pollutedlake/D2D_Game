@@ -91,6 +91,33 @@ void CHero::Render_Unit(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidColorBru
 	Calc_Pos.x = m_CurPos.x - img_Half.x;
 	Calc_Pos.y = m_CurPos.y - img_Half.y;
 
+	//---- HP Bar Render
+	static float FigureAlpha = 1.0f;  //도형 투명도
+	static float a_CalcMXX = 0.0f;
+	static float a_CalcMYY = (int)(img_Half.x * 0.8f);
+	static float a_HpBSize = 50;
+	static float a_CurHpSize = 0;
+	a_CalcMXX = a_HpBSize / 2.0f;
+	a_CurHpSize = a_HpBSize * ((float)m_CurHP / (float)m_MaxHP);
+
+	a_CalcMYY = (int)(img_Half.y * 0.83f);
+
+	static float a_iXX = 0; //정수로 반올림 환산(그리기는 정수 좌표이기 때문에...)
+	static float a_iYY = 0;
+	a_iXX = m_RenderPos.x;
+	a_iYY = m_RenderPos.y;
+	//	AdjustRenderPosForShake(a_iXX);
+	//	AdjustRenderPosForShake(a_iYY);
+
+	a_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Red, FigureAlpha));
+	a_pd2dRTarget->FillRectangle(D2D1::RectF(a_iXX - a_CalcMXX, a_iYY - a_CalcMYY, a_iXX - a_CalcMXX + a_CurHpSize, a_iYY - (a_CalcMYY + 9.0f)), a_pBrush);
+
+	a_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::White, FigureAlpha));
+	a_pd2dRTarget->DrawRectangle(D2D1::RectF(a_iXX - a_CalcMXX, a_iYY - a_CalcMYY, a_iXX - a_CalcMXX + a_HpBSize, a_iYY - (a_CalcMYY + 9.0f)), a_pBrush);
+
+	a_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::White));
+	////---- HP Bar Render
+
 	//------ 캐릭터 Render
 	a_pd2dRTarget->DrawBitmap(m_SocketImg, D2D1::RectF(m_RenderPos.x - img_Half.x, m_RenderPos.y - img_Half.y, m_RenderPos.x + img_Half.x, m_RenderPos.y + img_Half.y));
 	//------ 캐릭터 Render
@@ -119,6 +146,19 @@ void CHero::MsPicking(Vector2D a_TgPos)
 	m_bMoveOnOff = true;
 
 	m_TargetPos = a_TgPos;		// 목표점
+}
+
+void CHero::TakeDamage(float a_Damage)
+{
+	// 몬스터가 주인공 공격
+	m_CurHP = m_CurHP - (int)a_Damage;
+
+	if (m_CurHP <= 0) {		// 사망처리
+		// 남은 몬스터와 총알 제거
+		// g_GameState = GAME_OVER;
+
+		m_CurHP = 0;
+	}
 }
 
 CHero g_Hero;

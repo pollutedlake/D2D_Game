@@ -61,3 +61,18 @@ float GetMvDelta(int WpType)
 
 	return g_MvRocDelta;
 }
+
+int ChangeWeapon()
+{
+	if (WeaponSlot == EWeaponSlots::HEAVY_MACHINE_GUN) {
+		WeaponSlot = EWeaponSlots::ROCKET_LAUNCHER;
+	}
+	else if (WeaponSlot == EWeaponSlots::ROCKET_LAUNCHER) {
+		WeaponSlot = EWeaponSlots::PISTOL;
+	}
+	else if (WeaponSlot == EWeaponSlots::PISTOL) {
+		WeaponSlot = EWeaponSlots::HEAVY_MACHINE_GUN;
+	}
+
+	return (int)WeaponSlot;
+}

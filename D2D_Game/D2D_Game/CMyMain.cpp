@@ -138,6 +138,22 @@ void CMyMain::MainUpdate()
 	}
 	//------ MousePick 처리 부분
 
+	//------ 무기 교체
+	static bool isSPDown = true;
+	if (GetFocus() != NULL) {
+		if ((GetAsyncKeyState(VK_SPACE) & 0x8000)) {
+			if (isSPDown == true) {
+				int a_WpIdx = ChangeWeapon();
+
+				isSPDown = false;
+			}	// if (isSPDown == true)
+		}	// if ((GetAsyncKeyState(VK_SPACE) & 0x8000))
+		else {
+			isSPDown = true;
+		}
+	}
+	//------ 무기 교체
+
 	//------ 총알 발사
 	static float g_Ticktime = 0.0f;
 
@@ -234,7 +250,7 @@ void CMyMain::MainUpdate()
 	g_Bullet_Mgr.m_CenterPos = m_ScreenHalf;
 	g_Bullet_Mgr.m_CamPos = g_Hero.m_CamPos;
 	GDeltaUpdate(m_DeltaTime);
-	g_Bullet_Mgr.BLMgerUpdate(m_DeltaTime, m_LastTime, GetMvDelta, CheckCollision, NULL);
+	g_Bullet_Mgr.BLMgerUpdate(m_DeltaTime, m_LastTime, GetMvDelta, CheckCollision, CParticle_Mgr::GenSmokeParticle);
 	//------ 총알 업데이트
 
 	//------ 파티클 업데이트
@@ -296,6 +312,10 @@ void CMyMain::MainRender(HWND a_hWnd)
 	//--- 총알 렌더링
 	g_Bullet_Mgr.BLMgerRender(m_pd2dRenderTarget, m_Brush);
 	//--- 총알 렌더링
+
+	//------ 미사일 폭발 전용 파티클 렌더링
+	g_Particle_Mgr.MslExpMgrRender(m_pd2dRenderTarget, m_Brush);
+	//------ 미사일 폭발 전용 파티클 렌더링
 
 	m_Brush->SetColor(D2D1::ColorF(0xff00ff));
 	D2D1_SIZE_F renderTargetSize = m_pd2dRenderTarget->GetSize();
