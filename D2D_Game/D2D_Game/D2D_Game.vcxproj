@@ -150,17 +150,21 @@
     <ClInclude Include="CBackGround.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CBullet_Mgr.h" />
+    <ClInclude Include="CButton.h" />
     <ClInclude Include="CHero.h" />
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CMonster_Mgr.h" />
     <ClInclude Include="CMyMain.h" />
     <ClInclude Include="CParticle_Mgr.h" />
     <ClInclude Include="CPtcEmitter.h" />
+    <ClInclude Include="CUIBase.h" />
+    <ClInclude Include="CUIManager.h" />
     <ClInclude Include="D2D_Game.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GlobalValue.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SpawnPos.h" />
+    <ClInclude Include="SubImage.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
@@ -168,15 +172,19 @@
     <ClCompile Include="CBackGround.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CBullet_Mgr.cpp" />
+    <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CHero.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CMonster_Mgr.cpp" />
     <ClCompile Include="CMyMain.cpp" />
     <ClCompile Include="CParticle_Mgr.cpp" />
     <ClCompile Include="CPtcEmitter.cpp" />
+    <ClCompile Include="CUIBase.cpp" />
+    <ClCompile Include="CUIManager.cpp" />
     <ClCompile Include="D2D_Game.cpp" />
     <ClCompile Include="GlobalValue.cpp" />
     <ClCompile Include="SpawnPos.cpp" />
+    <ClCompile Include="SubImage.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>

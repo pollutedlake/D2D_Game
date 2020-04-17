@@ -76,3 +76,40 @@ int ChangeWeapon()
 
 	return (int)WeaponSlot;
 }
+
+//------ 카메라 흔들기...
+CameraShaker CameraShake;
+DWORD g_vLastTime = 0.0;
+
+void AdjustRenderPosForShake(float& Pos)
+{
+	if (CameraShake.Enabled) {
+		float PER = (CameraShake.EndTime - g_vLastTime) / CameraShake.LifeTime;
+
+		if (PER <= 0.0f) {
+			CameraShake.Enabled = false;
+			return;
+		}
+
+		if (1.0f < PER) {
+			PER = 1.0f;
+		}
+
+		float Power = CameraShake.Power;
+		Power *= PER;
+		Power *= (RandInt(-1000, 1000) / 1000.0f);
+
+		Pos += Power;
+	}
+}
+
+void ShakeScreen(float Power, float Duration)
+{
+	Duration = Duration * 1000.0f;
+
+	CameraShake.Power = Power;
+	CameraShake.EndTime = g_vLastTime + (double)Duration;
+	CameraShake.LifeTime = (double)Duration;
+	CameraShake.Enabled = true;
+}
+//------ 카메라 흔들기...

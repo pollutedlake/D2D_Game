@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "CHero.h"
+#include "GlobalValue.h"
 
 CHero::CHero()
 {
@@ -106,8 +107,8 @@ void CHero::Render_Unit(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidColorBru
 	static float a_iYY = 0;
 	a_iXX = m_RenderPos.x;
 	a_iYY = m_RenderPos.y;
-	//	AdjustRenderPosForShake(a_iXX);
-	//	AdjustRenderPosForShake(a_iYY);
+	AdjustRenderPosForShake(a_iXX);
+	AdjustRenderPosForShake(a_iYY);
 
 	a_pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Red, FigureAlpha));
 	a_pd2dRTarget->FillRectangle(D2D1::RectF(a_iXX - a_CalcMXX, a_iYY - a_CalcMYY, a_iXX - a_CalcMXX + a_CurHpSize, a_iYY - (a_CalcMYY + 9.0f)), a_pBrush);
@@ -119,7 +120,7 @@ void CHero::Render_Unit(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidColorBru
 	////---- HP Bar Render
 
 	//------ 캐릭터 Render
-	a_pd2dRTarget->DrawBitmap(m_SocketImg, D2D1::RectF(m_RenderPos.x - img_Half.x, m_RenderPos.y - img_Half.y, m_RenderPos.x + img_Half.x, m_RenderPos.y + img_Half.y));
+	a_pd2dRTarget->DrawBitmap(m_SocketImg, D2D1::RectF(a_iXX - img_Half.x, a_iYY - img_Half.y, a_iXX + img_Half.x, a_iYY + img_Half.y));
 	//------ 캐릭터 Render
 }
 

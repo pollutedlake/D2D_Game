@@ -83,7 +83,7 @@ void CMyMain::MainUpdate()
 	m_CurTime = timeGetTime();
 	m_DeltaTime = (float)((m_CurTime - m_LastTime) * 0.001f);
 	m_LastTime = m_CurTime;
-	// g_vLastTime = m_LastTime;
+	g_vLastTime = m_LastTime;
 	timeEndPeriod(1);
 	//------ DeltaTime 얻어오는 방법
 
@@ -624,7 +624,7 @@ bool CMyMain::CheckCollision(CBullet* a_RefBull, DWORD a_CurTime)
 			g_Particle_Mgr.Explosion_MGun(a_RefBull->m_CurPos, a_CurTime);		// 작은 파티클 시작
 		}
 		else if (a_RefBull->WeaponType == EWeaponSlots::ROCKET_LAUNCHER) {
-			// ShakeScreen(5.0f, 0.2f);
+			ShakeScreen(5.0f, 0.2f);
 			g_Particle_Mgr.Explosion_Missile(a_RefBull->m_CurPos, a_CurTime, a_RefBull->m_DirRot);
 		}
 

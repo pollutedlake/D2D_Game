@@ -49,8 +49,8 @@ void CBullet::BulletRender(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidColor
 	static float a_iYY = 0;
 	a_iXX = (float)m_RenderPos.x - (int)a_CamPos.x;
 	a_iYY = (float)m_RenderPos.y - (int)a_CamPos.y;
-	// AdjustRenderPosForShake(a_iXX);
-	// AdjustRenderPosForShake(a_iYY);
+	AdjustRenderPosForShake(a_iXX);
+	AdjustRenderPosForShake(a_iYY);
 
 	int x = a_iXX - m_TexImgWidth * 0.5f;
 	int y = a_iYY - m_TexImgHeight * 0.5f;

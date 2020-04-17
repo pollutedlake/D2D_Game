@@ -70,6 +70,8 @@ void CMonster::Render_Unit(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidColor
 	static float a_iYY = 0;
 	a_iXX = m_RenderPos.x;
 	a_iYY = m_RenderPos.y;
+	AdjustRenderPosForShake(a_iXX);
+	AdjustRenderPosForShake(a_iYY);
 
 	//--- HP Bar Render
 	static float FigureAlpha = 1.0f;		// 도형 투명도

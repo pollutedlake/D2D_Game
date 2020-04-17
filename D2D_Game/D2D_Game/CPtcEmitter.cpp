@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "CPtcEmitter.h"
+#include "GlobalValue.h"
 
 CPtcEmitter::CPtcEmitter()
 {
@@ -51,8 +52,8 @@ void CPtcEmitter::Emt_Render(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidCol
 	float x = SimulatedPos.x - SimulatedSize.x * 0.5f;
 	float y = SimulatedPos.y - SimulatedSize.y * 0.5f;
 
-	// AdjustRenderPosForShake(x);
-	// AdjustRenderPosForShake(y);
+	AdjustRenderPosForShake(x);
+	AdjustRenderPosForShake(y);
 
 	D2D1_POINT_2F center_pos = { x + SimulatedSize.x * 0.5f, y + SimulatedSize.y * 0.5f };
 	a_pd2dRTarget->SetTransform(D2D1::Matrix3x2F::Rotation(m_DirRot, center_pos));
@@ -125,8 +126,8 @@ void CPtcEmitter::MslExpRender(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidC
 	width = 220.0f;
 	height = 220.0f;
 
-	// AdjustRenderPosForShake(x);
-	// AdjustRenderPosForShake(y);
+	AdjustRenderPosForShake(x);
+	AdjustRenderPosForShake(y);
 	//------ 이미지 렌더링
 	a_pd2dRTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 

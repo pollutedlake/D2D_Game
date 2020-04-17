@@ -1,42 +1,49 @@
-﻿  CHero.cpp
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CHero.cpp(41,38): warning C4244: '인수': 'double'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CHero.cpp(68,51): warning C4244: '인수': 'double'에서 'const float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CHero.cpp(97,25): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CHero.cpp(103,31): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  CMonster.cpp
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster.cpp(33,13): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster.cpp(38,28): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster.cpp(39,28): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster.cpp(64,37): warning C4244: '=': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster.cpp(65,37): warning C4244: '=': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster.cpp(66,26): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster.cpp(67,26): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster.cpp(77,25): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster.cpp(83,31): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  CMonster_Mgr.cpp
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\SpawnPos.h(51,38): warning C4244: '=': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\SpawnPos.h(52,38): warning C4244: '=': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\SpawnPos.h(53,27): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\SpawnPos.h(54,27): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster_Mgr.cpp(38,23): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster_Mgr.cpp(45,15): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster_Mgr.cpp(132,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster_Mgr.cpp(147,24): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster_Mgr.cpp(188,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster_Mgr.cpp(235,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMonster_Mgr.cpp(278,33): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-  CMyMain.cpp
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\SpawnPos.h(51,38): warning C4244: '=': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\SpawnPos.h(52,38): warning C4244: '=': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\SpawnPos.h(53,27): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\SpawnPos.h(54,27): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  CBullet.cpp
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CBullet.cpp(35,22): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CBullet.cpp(55,8): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CBullet.cpp(56,8): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CBullet.cpp(66,47): warning C4244: '인수': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CBullet.cpp(66,44): warning C4244: '인수': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CBullet.cpp(70,57): warning C4244: '인수': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CBullet.cpp(70,54): warning C4244: '인수': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  CButton.cpp
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(30,39): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(31,39): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(38,122): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(38,103): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(38,86): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(38,68): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(43,120): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(43,101): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(43,84): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(43,66): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(47,38): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(52,39): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(53,39): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(55,138): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(55,120): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(55,104): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(55,87): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(62,24): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CButton.cpp(154,26): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  CPtcEmitter.cpp
 C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CPtcEmitter.h(28,22): warning C4244: '초기화 중': 'float'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CPtcEmitter.h(29,21): warning C4244: '초기화 중': 'float'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMyMain.cpp(409,16): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMyMain.cpp(461,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMyMain.cpp(484,17): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMyMain.cpp(485,17): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMyMain.cpp(504,41): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CMyMain.cpp(505,41): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CPtcEmitter.cpp(77,13): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CPtcEmitter.cpp(78,14): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CPtcEmitter.cpp(95,19): warning C4244: '=': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CPtcEmitter.cpp(96,18): warning C4244: '=': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CPtcEmitter.cpp(98,26): warning C4244: '=': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CPtcEmitter.cpp(99,27): warning C4244: '=': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  CUIBase.cpp
+  CUIManager.cpp
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CUIManager.cpp(43,24): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CUIManager.cpp(44,34): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CUIManager.cpp(50,24): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CUIManager.cpp(57,24): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CUIManager.cpp(74,24): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CUIManager.cpp(86,24): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\D2D_Game\CUIManager.cpp(99,24): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  SubImage.cpp
   코드를 생성하고 있습니다...
   D2D_Game.vcxproj -> C:\Users\psh95\OneDrive\바탕 화면\상현\공부\Game Programing\D2D_Game\D2D_Game\Debug\D2D_Game.exe

@@ -63,6 +63,18 @@
     <ClInclude Include="CPtcEmitter.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CButton.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIBase.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SubImage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D2D_Game.cpp">
@@ -102,6 +114,18 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CPtcEmitter.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CButton.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIBase.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SubImage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
