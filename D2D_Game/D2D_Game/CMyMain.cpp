@@ -8,6 +8,8 @@
 #include "CBullet_Mgr.h"
 #include "GlobalValue.h"
 #include "CParticle_Mgr.h"
+#include "CUIManager.h"
+#include "CButton.h"
 
 CMyMain::CMyMain()
 {
@@ -53,6 +55,15 @@ void CMyMain::MainInit(HWND a_hWnd)
 	//------ 이미지 로딩 준비
 	//------ Direct2D 초기화 부분 / 메모리 확보는 UpdateWindow() 하기 전에 해야 한다.
 
+	//--- 애니메이션 데이터 이미지 로딩
+	CMotion::CB_LoadImg = D2DLoadImg;		// 함수 포인터 넘기기
+	for (int ii = 0; ii < CTT_Length; ii++) {
+		CAnimData* a_Node = new CAnimData();
+		a_Node->LoadAnimList((CT_Type)ii);
+		m_CharAniList.push_back(a_Node);
+	}
+	//--- 애니메이션 데이터 이미지 로딩
+
 	//------ 배경 초기화
 	g_BG_Mgr.BGMgrInit(D2DLoadImg);
 	//------ 배경 초기화
@@ -72,6 +83,10 @@ void CMyMain::MainInit(HWND a_hWnd)
 	//------ 파티클 초기화 부분
 	g_Particle_Mgr.PtcMgrInit(D2DLoadImg);
 	//------ 파티클 초기화 부분
+
+	//------ UI 초기화 부분
+	g_UI_Mgr.UIMgrInit(m_hWnd, D2DLoadImg);
+	//------ UI 초기화 부분
 
 	LoadMonSpPos();		// 몬스터 Pos정보 로딩
 }
@@ -110,29 +125,33 @@ void CMyMain::MainUpdate()
 		// 윈도우가 액티브 상태일 때만 반응하도록 예외처리 고려...
 		if (GetFocus() != NULL) {		// 내 윈도우가 포커스를 가지고 있지 않으면 NULL이 리턴됨
 			if (a_IsCkLBtn == false) {		// WM_LBUTTONDOWN: 대신
-				static POINT a_NewMMXZ;
-				GetCursorPos(&a_NewMMXZ);		// 현재 마우스 좌표를 얻어오는 함수
-				ScreenToClient(m_hWnd, &a_NewMMXZ);		// 클라이언트 화면 좌표로 변경해 주는 함수
-				static Vector2D a_TargetV;
-				// 피킹 좌표(스크린좌표)를 절대좌표(월드좌표)로 환산
-				a_TargetV.x = (int)a_NewMMXZ.x + m_CamPos.x;		// 마우스의 좌표
-				a_TargetV.y = (int)a_NewMMXZ.y + m_CamPos.y;
+				m_IsUILock = g_UI_Mgr.OnLButtonDown(m_hWnd);
+				if (m_IsUILock == false) {
+					static POINT a_NewMMXZ;
+					GetCursorPos(&a_NewMMXZ);		// 현재 마우스 좌표를 얻어오는 함수
+					ScreenToClient(m_hWnd, &a_NewMMXZ);		// 클라이언트 화면 좌표로 변경해 주는 함수
+					static Vector2D a_TargetV;
+					// 피킹 좌표(스크린좌표)를 절대좌표(월드좌표)로 환산
+					a_TargetV.x = (int)a_NewMMXZ.x + m_CamPos.x;		// 마우스의 좌표
+					a_TargetV.y = (int)a_NewMMXZ.y + m_CamPos.y;
 
-				if (m_IsMonEdit == true) {
-					g_Mon_Mgr.AddMonSpPos(a_TargetV);
-					static TCHAR str[128];
-					_stprintf_s(str, _T("몬스터 에디트 모드 : %d"), g_Mon_Mgr.m_SpawnPos.size());
-					SetWindowText(m_hWnd, (LPTSTR)str);
-				}
-				else {
-					g_Hero.MsPicking(a_TargetV);
-				}
+					if (m_IsMonEdit == true) {
+						g_Mon_Mgr.AddMonSpPos(a_TargetV);
+						static TCHAR str[128];
+						_stprintf_s(str, _T("몬스터 에디트 모드 : %d"), g_Mon_Mgr.m_SpawnPos.size());
+						SetWindowText(m_hWnd, (LPTSTR)str);
+					}
+					else {
+						g_Hero.MsPicking(a_TargetV);
+					}
+				}	// if (m_IsUILock == false)
 
 				a_IsCkLBtn = true;
 			}	// if (a_IsCkLBtn == false)
 		}	// if (GetFocus() != NULL)
 	}	// if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
 	else {
+		g_UI_Mgr.OnLButtonUp();
 		m_IsUILock = false;
 		a_IsCkLBtn = false;
 	}
@@ -144,6 +163,9 @@ void CMyMain::MainUpdate()
 		if ((GetAsyncKeyState(VK_SPACE) & 0x8000)) {
 			if (isSPDown == true) {
 				int a_WpIdx = ChangeWeapon();
+				if (0 < g_UI_Mgr.m_InGameUIList.size()) {
+					((CButton*)g_UI_Mgr.m_InGameUIList[0])->ChangeSubImg(a_WpIdx);	// 이미지 교체
+				}
 
 				isSPDown = false;
 			}	// if (isSPDown == true)
@@ -256,6 +278,11 @@ void CMyMain::MainUpdate()
 	//------ 파티클 업데이트
 	g_Particle_Mgr.PtcMgrUpdate(m_LastTime, m_ScreenHalf, m_CamPos);
 	//------ 파티클 업데이트
+
+	//--- UI 업데이트 부분
+	g_UI_Mgr.UIMgrUpdate(m_DeltaTime);
+	//--- UI 업데이트 부분
+
 }	// void CMyMain::MainUpdate()
 
 void CMyMain::MainRender(HWND a_hWnd)
@@ -317,6 +344,10 @@ void CMyMain::MainRender(HWND a_hWnd)
 	g_Particle_Mgr.MslExpMgrRender(m_pd2dRenderTarget, m_Brush);
 	//------ 미사일 폭발 전용 파티클 렌더링
 
+	//------ UI 렌더 부분
+	g_UI_Mgr.UIMgrRender(m_pd2dRenderTarget, m_Brush);
+	//------ UI 렌더 부분
+
 	m_Brush->SetColor(D2D1::ColorF(0xff00ff));
 	D2D1_SIZE_F renderTargetSize = m_pd2dRenderTarget->GetSize();
 	m_pd2dRenderTarget->DrawText(strFPS, wcslen(strFPS), m_pTextFormat, D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height), m_Brush);
@@ -326,6 +357,20 @@ void CMyMain::MainRender(HWND a_hWnd)
 
 void CMyMain::MainDestroy()
 {
+	//------ 애니메이션 데이터 삭제 부분
+	for (int ii = 0; ii < m_CharAniList.size(); ii++) {
+		if (m_CharAniList[ii] != NULL) {
+			delete m_CharAniList[ii];
+			m_CharAniList[ii] = NULL;
+		}
+	}
+	m_CharAniList.clear();
+	//------ 애니메이션 데이터 삭제 부분
+
+	//--- UI 제거 부분
+	g_UI_Mgr.UIMgrDestroy();
+	//--- UI 제거 부분
+
 	//--- 몬스터 제거...
 	g_Mon_Mgr.MonMgr_Destroy();
 	//--- 몬스터 제거...

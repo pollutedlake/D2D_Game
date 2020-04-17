@@ -13,6 +13,7 @@
 #include <time.h>		// timeGetTime() 함수 사용을 위하여...
 #include <mmsystem.h>		// timeGetTime() 함수 사용을 위하여...
 #include "Vector2D.h"
+#include "CAnimData.h"
 
 class CMyMain
 {
@@ -44,6 +45,8 @@ class CMyMain
 	// 카메라의 절대좌표와 오브젝트의 절대좌표의 갭을 계산하고 화면의 반사이즈만큼 더해서 그려주면 된다. (실제로 렌더링할 때는 화면의 반사이즈만큼을 더해서 그려야 한다. 왜냐하면 화면의 Left. Top이 0. 0 좌표이기 때문에 항상 카메라는 화면의 중앙에 위치하기 때문이다.)
 	VecINT2D m_ScreenHalf;		// 화면의 반사이즈 계속 계산해 준다.
 	Vector2D m_CamPos = { 0.0f,0.0f };		// 카메라의 절대좌표(전체 지형 기준의 카메라의 좌표)
+
+	vector<CAnimData*> m_CharAniList;
 
 public:
 	//------ Edit 기능
