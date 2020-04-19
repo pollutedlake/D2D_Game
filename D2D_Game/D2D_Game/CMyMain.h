@@ -13,7 +13,9 @@
 #include <time.h>		// timeGetTime() 함수 사용을 위하여...
 #include <mmsystem.h>		// timeGetTime() 함수 사용을 위하여...
 #include "Vector2D.h"
-#include "CAnimData.h"
+
+#include <vector>
+using namespace std;
 
 class CMyMain
 {
@@ -46,7 +48,7 @@ class CMyMain
 	VecINT2D m_ScreenHalf;		// 화면의 반사이즈 계속 계산해 준다.
 	Vector2D m_CamPos = { 0.0f,0.0f };		// 카메라의 절대좌표(전체 지형 기준의 카메라의 좌표)
 
-	vector<CAnimData*> m_CharAniList;
+	vector<class CAnimData*> m_CharAniList;
 
 public:
 	//------ Edit 기능

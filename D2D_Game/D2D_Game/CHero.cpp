@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "CHero.h"
 #include "GlobalValue.h"
+#include "CAnimData.h"
 
 CHero::CHero()
 {
@@ -8,6 +9,16 @@ CHero::CHero()
 	m_MaxHP = 150;
 
 	m_MoveSpeed = 200.0;
+
+	//------ 애니메이션 관련 변수 초기화
+	m_RefAniData = NULL;
+
+	m_CurAniState = AS_None;
+	m_NowImgCount = 0;
+	m_CurAniInx = 0;		// 진행 Ani Index
+	m_AniTickCount = 0;		// 다음 프레임까지 시간 Add
+	m_EachAniDelay = 0.2f;		// 프레임 간격 시간
+	//------ 애니메이션 관련 변수 초기화
 }
 
 CHero::~CHero()
@@ -69,6 +80,39 @@ void CHero::Update_Unit(double a_DeltaTime)
 		m_CurPos = m_CurPos + (a_KDirVec * (a_DeltaTime * m_MoveSpeed));
 	}
 	//------ 캐릭터 키보드 이동처리
+
+	//------ 캐릭터 애니메이션 상태 변경 처리 부분
+	if (m_bMoveOnOff == true) {
+		a_KDirVec.x = m_DirVec.x;
+		a_KDirVec.y = m_DirVec.y;
+	}
+
+	if (a_KDirVec.x != 0.0f || a_KDirVec.y != 0.0f) {
+		static Vector2D m_ZeroVec;
+		m_ZeroVec.x = 0.0f;
+		m_ZeroVec.y = 0.0f;
+		float a_Angle = GetAngle(m_ZeroVec, a_KDirVec);
+		if (50.0f < a_Angle && a_Angle < 130.0f) {
+			ChangeState(Left_Walk);
+		}
+		else if (130.0f <= a_Angle && a_Angle <= 230.0f) {
+			ChangeState(Back_Walk);
+		}
+		else if (230.0f < a_Angle && a_Angle < 310.0f) {
+			ChangeState(Right_Walk);
+		}
+		else {
+			ChangeState(Front_Walk);
+		}
+	}
+	else {
+		ChangeState(Idle);
+	}
+	//------ 캐릭터 애니메이션 상태 변경 처리 부분
+
+	//------ 애니메이션 프레임 계산 부분
+	AniFrameUpdate(a_DeltaTime);
+	//------ 애니메이션 프레임 계산 부분
 }
 
 void CHero::Render_Unit(ID2D1HwndRenderTarget* a_pd2dRTarget, ID2D1SolidColorBrush* a_pBrush)
@@ -160,6 +204,100 @@ void CHero::TakeDamage(float a_Damage)
 
 		m_CurHP = 0;
 	}
+}
+
+void CHero::SetAni_Rsc(CT_Type a_CharType, vector<class CAnimData*>* refAnimList)
+{
+	if (refAnimList == nullptr) {
+		return;
+	}
+
+	if (a_CharType <= CT_None || CTT_Length <= a_CharType) {
+		return;
+	}
+
+	m_CharicType = a_CharType;
+
+	if (a_CharType < refAnimList->size()) {
+		m_RefAniData = (*refAnimList)[(int)a_CharType];
+	}
+
+	if (m_RefAniData != NULL) {
+		if (m_SocketImg != NULL) {
+			m_SocketImg->Release();
+			m_SocketImg = NULL;
+		}
+	}
+
+	ChangeState(Idle);
+}
+
+bool CHero::ChangeState(AniState newState)
+{
+	if (m_CurAniState == newState) {
+		return false;
+	}
+
+	if (m_RefAniData == NULL) {
+		return false;
+	}
+
+	if (newState <= AS_None || AniLength <= newState) {
+		return false;
+	}
+
+	static int a_NowImgCount = 0;
+	a_NowImgCount = m_RefAniData->GetFrameCount(newState);
+	if (a_NowImgCount <= 0) {
+		return false;
+	}
+
+	m_NowImgCount = a_NowImgCount;
+
+	m_CurAniInx = 0;
+	m_AniTickCount = 0;
+
+	if (newState == Idle) {
+		m_EachAniDelay = 0.4f;
+	}
+	else {
+		m_EachAniDelay = 0.12f;
+	}
+
+	m_SocketImg = m_RefAniData->GetFrameImg(newState, 0);		// 첫동작 대입
+
+	m_CurAniState = newState;
+
+	return true;
+}
+
+void CHero::AniFrameUpdate(double a_DeltaTime)
+{
+	//------ 애니메이션 프레임 계산 부분
+	if (m_RefAniData == NULL) {
+		return;
+	}
+
+	if (m_CurAniState == AS_None) {
+		return;
+	}
+
+	if (m_NowImgCount <= 0) {		// 애니 소켓에 뭔가 꼽혀 있는지 확인해 보는 안전장치
+		return;
+	}
+
+	m_AniTickCount = m_AniTickCount + a_DeltaTime;
+	if (m_EachAniDelay < m_AniTickCount) {		// 다음 프레임
+		m_CurAniInx++;
+		if (m_NowImgCount <= m_CurAniInx) {
+			m_CurAniInx = 0;
+		}
+
+		m_SocketImg = m_RefAniData->GetFrameImg(m_CurAniState, m_CurAniInx);
+
+		m_AniTickCount = 0;
+	}
+	//------ 애니메이션 프레임 계산 부분
 }
 
 CHero g_Hero;

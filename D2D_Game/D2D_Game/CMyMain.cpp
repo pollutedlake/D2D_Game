@@ -10,6 +10,7 @@
 #include "CParticle_Mgr.h"
 #include "CUIManager.h"
 #include "CButton.h"
+#include "CAnimData.h"
 
 CMyMain::CMyMain()
 {
@@ -28,7 +29,7 @@ void CMyMain::MainInit(HWND a_hWnd)
 	//--- DeltaTime 얻어 오는 방법
 	m_LastTime = timeGetTime();
 	m_LastTick = timeGetTime();
-	// g_vLastTime = m_LastTIme;
+	g_vLastTime = m_LastTime;
 	//--- DeltaTime 얻어 오는 방법
 
 	//------ Direct2D 초기화 부분 / 메모리 확보는 UpdateWindow() 하기 전에 해야 한다.
@@ -70,6 +71,7 @@ void CMyMain::MainInit(HWND a_hWnd)
 
 	//------ 주인공 이미지 로딩 부분
 	g_Hero.Init_Unit(D2DLoadImg);
+	g_Hero.SetAni_Rsc(CT_Nanami, &m_CharAniList);
 	//------ 주인공 이미지 로딩 부분
 
 	//------ 몬스터 매니저 초기화
